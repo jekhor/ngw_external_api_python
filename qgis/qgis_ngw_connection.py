@@ -21,8 +21,8 @@
 import json
 from base64 import b64encode
 
-from PyQt4.QtCore import *
-from PyQt4.QtNetwork import *
+from PyQt4.QtCore import QEventLoop, QByteArray, QBuffer, QObject, QUrl, QIODevice
+from PyQt4.QtNetwork import QNetworkRequest
 
 from qgis.core import *
 from qgis.utils import iface

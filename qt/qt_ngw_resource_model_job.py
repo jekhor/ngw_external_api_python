@@ -22,7 +22,7 @@ import sys
 import json
 import traceback
 
-from PyQt4.QtCore import *
+from PyQt4.QtCore import pyqtSignal, QObject
 
 from ..core.ngw_error import NGWError
 from ..core.ngw_resource import NGWResource
