@@ -22,16 +22,19 @@
  *                                                                         *
  ***************************************************************************/
 """
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
 import os
-from urlparse import urlparse
+from urllib.parse import urlparse
 
-from PyQt4 import uic
-from PyQt4.QtCore import Qt, QTimer, QThread, QObject, pyqtSignal, QMutex
-from PyQt4.QtGui import QDialog, QDialogButtonBox, QCompleter, QStringListModel
+from qgis.PyQt import uic
+from qgis.PyQt.QtCore import Qt, QTimer, QThread, QObject, pyqtSignal, QMutex
+from qgis.PyQt.QtWidgets import QDialog, QDialogButtonBox, QCompleter
 from ..core.ngw_connection_settings import NGWConnectionSettings
 from ..core.ngw_resource_factory import NGWResourceFactory
 
-from qgis_ngw_connection import QgsNgwConnection
+from .qgis_ngw_connection import QgsNgwConnection
 
 __author__ = 'NextGIS'
 __date__ = 'October 2014'

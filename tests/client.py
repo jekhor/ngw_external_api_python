@@ -11,7 +11,9 @@ client.enable_logging()
 ngw_root_group = client.get_resource(0)
 
 """
+from __future__ import print_function
 
+from builtins import input
 import os
 import sys
 import json 
@@ -46,11 +48,11 @@ def connect(connection_string=None):
         url, userpwd = connection_string.split("@")
         user, pwd = userpwd.split(":")
 
-    url = raw_input("Url: ") if url is None else url
-    user = raw_input("User: ") if user is None else user
+    url = input("Url: ") if url is None else url
+    user = input("User: ") if user is None else user
 
     if user != "":
-        pwd = raw_input("Password: ") if pwd is None else pwd       
+        pwd = input("Password: ") if pwd is None else pwd       
     else:
         pwd = ""
 
@@ -66,7 +68,8 @@ def reconnect():
     connect()
 
 def clinet_print(msg):
-    print msg
+    # fix_print_with_import
+    print(msg)
 
 def enable_logging():
     utils.debug = True
@@ -75,14 +78,16 @@ def enable_logging():
 def ngw_client_request(fn):
     def wrapped(*args, **wargs):
         if ngwConnection is None:
-            print "Need establish connection!"
+            # fix_print_with_import
+            print("Need establish connection!")
             connect()
         try:
             return fn(*args, **wargs)
         except NGWError as err:
             if err.type == NGWError.TypeNGWError:
                 ngw_exeption_dict = json.loads(err.message)
-                print "NGW Error: %s" % ngw_exeption_dict.get("message", "No message") 
+                # fix_print_with_import
+                print("NGW Error: %s" % ngw_exeption_dict.get("message", "No message")) 
                 return None
 
             raise err
@@ -105,22 +110,25 @@ def get_resource(ngw_resource_id):
 @ngw_client_request
 def create_wms(name, url, parent_ngw_resource_id):
     parent_ngw_resource = get_resource(parent_ngw_resource_id)
-    print "parent_ngw_resource: ", parent_ngw_resource
+    # fix_print_with_import
+    print("parent_ngw_resource: ", parent_ngw_resource)
 
     #ToDO check resource type
 
     ngw_wms_connection = NGWWmsConnection.create_in_group(name, parent_ngw_resource, url)
-    print "ngw_wms_connection: ", ngw_wms_connection
+    # fix_print_with_import
+    print("ngw_wms_connection: ", ngw_wms_connection)
     return ngw_wms_connection
 
 
 @ngw_client_request
 def create_raster(name, file, parent_ngw_resource):
     def uploadFileCallback(total_size, readed_size):
-        print "%s - Upload (%d%%)" % (
+        # fix_print_with_import
+        print("%s - Upload (%d%%)" % (
                 file,
                 readed_size * 100 / total_size
-            )
+            ))
 
     ngw_raster_layer = ResourceCreator.create_raster_layer(
         parent_ngw_resource,

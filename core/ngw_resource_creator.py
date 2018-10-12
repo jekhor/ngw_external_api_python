@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+from builtins import object
 import os
 from .ngw_resource import NGWResource
 from .ngw_group_resource import NGWGroupResource
@@ -27,7 +28,7 @@ from .ngw_wfs_service import NGWWfsService
 from .ngw_webmap import NGWWebMap
 
 
-class ResourceCreator():
+class ResourceCreator(object):
 
     @staticmethod
     def create_group(parent_ngw_resource, new_group_name):

@@ -18,13 +18,16 @@
  *                                                                         *
  ***************************************************************************/
 """
+from __future__ import absolute_import
+from builtins import range
+from builtins import object
 import os
 import json
 import requests
 from base64 import b64encode
 from requests.utils import to_native_string
 
-from ngw_error import NGWError
+from .ngw_error import NGWError
 
 from ..utils import log
 
@@ -63,7 +66,7 @@ def _basic_auth_str(username, password):
 
 class NGWConnection(object):
 
-    AbilityBaseMap = range(1)
+    AbilityBaseMap = list(range(1))
 
     def __init__(self):
         self.__server_url = None
@@ -104,7 +107,7 @@ class NGWConnection(object):
 
     @server_url.setter
     def server_url(self, value):
-        if isinstance(value, (str, unicode)):
+        if isinstance(value, str):
             self.__server_url = value.strip().rstrip('\\\/')
         else:
             self.__server_url = value
@@ -190,7 +193,7 @@ class NGWConnection(object):
             with File2Upload(filename, callback) as fd:
                 upload_info = self.put(self.get_upload_file_url(), data=fd)
                 return upload_info
-        except requests.exceptions.RequestException, e:
+        except requests.exceptions.RequestException as e:
             raise NGWError(NGWError.TypeRequestError, e.message.args[0], self.get_upload_file_url())
 
     def download_file(self, url):
@@ -199,7 +202,7 @@ class NGWConnection(object):
 
         try:
             resp = self.__session.send(prep, stream=True)
-        except requests.exceptions.RequestException, e:
+        except requests.exceptions.RequestException as e:
             raise NGWError(NGWError.TypeRequestError, e.message.args[0], req.url)
 
         if resp.status_code / 100 != 2:
@@ -211,7 +214,7 @@ class NGWConnection(object):
         if self.__ngw_components is None:
             try:
                 self.__ngw_components = self.get(GET_VERSION_URL)
-            except requests.exceptions.RequestException, e:
+            except requests.exceptions.RequestException as e:
                 self.__ngw_components = {}
 
         return self.__ngw_components
@@ -223,7 +226,7 @@ class NGWConnection(object):
     def get_abilities(self):
         ngw_components = self.get_ngw_components()
         abilities = []
-        if ngw_components.has_key("nextgisweb_basemap"):
+        if "nextgisweb_basemap" in ngw_components:
             abilities.append(self.AbilityBaseMap)
 
         return abilities

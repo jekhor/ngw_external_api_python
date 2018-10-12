@@ -18,11 +18,13 @@
  *                                                                         *
  ***************************************************************************/
 """
+from __future__ import absolute_import
+from builtins import range
 from os import path
-from ngw_resource import NGWResource, API_LAYER_EXTENT
-from ngw_qgis_vector_style import NGWQGISVectorStyle
-from ngw_mapserver_style import NGWMapServerStyle
-from ngw_feature import NGWFeature
+from .ngw_resource import NGWResource, API_LAYER_EXTENT
+from .ngw_qgis_vector_style import NGWQGISVectorStyle
+from .ngw_mapserver_style import NGWMapServerStyle
+from .ngw_feature import NGWFeature
 
 from ..utils import ICONS_DIR, log
 
@@ -68,7 +70,7 @@ class NGWVectorLayer(NGWResource):
         MULTIPOLYGON: "vector_layer_mpolygon.svg",
     }
 
-    FieldTypeString, FieldTypeReal = range(2)
+    FieldTypeString, FieldTypeReal = list(range(2))
 
     def __init__(self, resource_factory, resource_json):
         NGWResource.__init__(self, resource_factory, resource_json)
@@ -280,7 +282,7 @@ class NGWVectorLayer(NGWResource):
         # if fields_list is None:
         #     raise NGWError('Cannot add alias for resource. There is no feature_layer-fields in Resource JSON')
 
-        aliases_keynames = aliases.keys()
+        aliases_keynames = list(aliases.keys())
 
         for field_index in range(len(fields_list)):
             field_keyname = fields_list[field_index]['keyname']

@@ -18,17 +18,20 @@
  *                                                                         *
  ***************************************************************************/
 """
+from __future__ import absolute_import
 
+from future import standard_library
+standard_library.install_aliases()
 import re, traceback
-from urlparse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs
 
-from ngw_connection_settings import NGWConnectionSettings
-from ngw_connection import NGWConnection
-from ngw_resource_factory import NGWResourceFactory
-from ngw_resource import NGWResource
-from ngw_vector_layer import NGWVectorLayer
+from .ngw_connection_settings import NGWConnectionSettings
+from .ngw_connection import NGWConnection
+from .ngw_resource_factory import NGWResourceFactory
+from .ngw_resource import NGWResource
+from .ngw_vector_layer import NGWVectorLayer
 
-from ngw_error import NGWError
+from .ngw_error import NGWError
 
 def ngw_resource_from_qgs_map_layer(qgs_map_layer):
     o = urlparse(qgs_map_layer.source())
@@ -46,9 +49,9 @@ def ngw_resource_from_qgs_map_layer(qgs_map_layer):
     requestAttrs = parse_qs(o.query)
 
     if qgs_map_layer.providerType() == u'WFS':
-        if requestAttrs.has_key(u'username'):
+        if u'username' in requestAttrs:
             ngw_username = requestAttrs.get(u'username')[0]
-        if requestAttrs.has_key(u'password'):
+        if u'password' in requestAttrs:
             ngw_password = requestAttrs.get(u'password')[0]
     elif qgs_map_layer.providerType() == u'ogr':
         if o.netloc.find('@') != -1:

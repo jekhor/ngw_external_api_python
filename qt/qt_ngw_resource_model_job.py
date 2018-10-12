@@ -18,11 +18,14 @@
  *                                                                         *
  ***************************************************************************/
 """
+from __future__ import absolute_import
+from builtins import str
+from builtins import object
 import sys
 import json
 import traceback
 
-from PyQt4.QtCore import pyqtSignal, QObject
+from qgis.PyQt.QtCore import pyqtSignal, QObject
 
 from ..core.ngw_error import NGWError
 from ..core.ngw_resource import NGWResource
@@ -32,10 +35,10 @@ from ..core.ngw_webmap import NGWWebMapLayer, NGWWebMapRoot
 
 from ..utils import log
 
-from qt_ngw_resource_model_job_error import *
+from .qt_ngw_resource_model_job_error import *
 
 
-class NGWResourceModelJobResult():
+class NGWResourceModelJobResult(object):
     def __init__(self):
         self.added_resources = []
         self.deleted_resources = []
@@ -59,7 +62,7 @@ class NGWResourceModelJobResult():
 
 class NGWResourceModelJob(QObject):
     started = pyqtSignal()
-    statusChanged = pyqtSignal(unicode)
+    statusChanged = pyqtSignal(str)
     warningOccurred = pyqtSignal(object)
     errorOccurred = pyqtSignal(object)
     dataReceived = pyqtSignal(object)

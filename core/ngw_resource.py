@@ -18,6 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 """
+from builtins import object
 import os
 from os import path
 
@@ -30,7 +31,7 @@ RESOURCE_URL = lambda res_id: '/resource/%d' % res_id
 API_LAYER_EXTENT = lambda res_id: '/api/resource/%d/extent' % res_id
 
 
-class Wrapper():
+class Wrapper(object):
     def __init__(self, **params):
         self.__dict__.update(params)
 
@@ -38,7 +39,7 @@ DICT_TO_OBJ = lambda d: Wrapper(**d)
 LIST_DICT_TO_LIST_OBJ = lambda l: [Wrapper(**el) for el in l]
 
 
-class NGWResource():
+class NGWResource(object):
 
     type_id = 'resource'
     icon_path = path.join(ICONS_DIR, 'resource.svg')

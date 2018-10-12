@@ -18,11 +18,13 @@
  *                                                                         *
  ***************************************************************************/
 """
+from builtins import str
+from builtins import range
 import json
 from base64 import b64encode
 
-from PyQt4.QtCore import QEventLoop, QByteArray, QBuffer, QObject, QUrl, QIODevice
-from PyQt4.QtNetwork import QNetworkRequest
+from qgis.PyQt.QtCore import QEventLoop, QByteArray, QObject, QUrl, QIODevice
+from qgis.PyQt.QtNetwork import QNetworkRequest
 
 from qgis.core import *
 from qgis.utils import iface
@@ -37,7 +39,7 @@ GET_VERSION_URL = '/api/component/pyramid/pkg_version'
 
 class QgsNgwConnection(QObject):
 
-    AbilityBaseMap = range(1)
+    AbilityBaseMap = list(range(1))
 
     """docstring for QgsNgwConnection"""
     def __init__(self, conn_settings, parent):
@@ -166,7 +168,7 @@ class QgsNgwConnection(QObject):
 
 
         try:
-            json_response = json.loads(unicode(data))
+            json_response = json.loads(str(data))
         except:
             log("Response\nerror response JSON parse\n%s" % data)
             raise NGWError(NGWError.TypeNGWUnexpectedAnswer, "", req.url().toString())
@@ -201,7 +203,7 @@ class QgsNgwConnection(QObject):
     def get_abilities(self):
         ngw_components = self.get_ngw_components()
         abilities = []
-        if ngw_components.has_key("nextgisweb_basemap"):
+        if "nextgisweb_basemap" in ngw_components:
             abilities.append(self.AbilityBaseMap)
 
         return abilities

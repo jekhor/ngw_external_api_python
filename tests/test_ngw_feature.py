@@ -1,3 +1,5 @@
+from __future__ import print_function
+from builtins import str
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -36,11 +38,13 @@ if __name__=="__main__":
     for file_name in files:
         attachment_info = ngwConnection.upload_file( file_name )
         id = ngwFeature.link_attachment(attachment_info)
-        print "link attachment with id %s"%str(id)
+        # fix_print_with_import
+        print("link attachment with id %s"%str(id))
     
     attachments = ngwFeature.get_attachments()
     for attachment in attachments:
         if attachment[u'is_image'] == True:
             ngw_attachment = NGWAttachment( attachment[u'id'], ngwFeature)
-            print ngw_attachment.get_image_full_url()
+            # fix_print_with_import
+            print(ngw_attachment.get_image_full_url())
             #ngwFeature.unlink_attachment( attachment[u'id'] )
