@@ -20,9 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 """
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 import os
 import glob
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import shutil
 import zipfile
 import tempfile
@@ -48,8 +52,8 @@ from ..core.ngw_webmap import NGWWebMap
 from ..core.ngw_base_map import NGWBaseMap, NGWBaseMapExtSettings
 from ..utils import log
 
-from ngw_plugin_settings import NgwPluginSettings
-from qgis_ngw_connection import QgsNgwConnection
+from .ngw_plugin_settings import NgwPluginSettings
+from .qgis_ngw_connection import QgsNgwConnection
 
 
 def getQgsMapLayerEPSG(qgs_map_layer):
@@ -267,9 +271,9 @@ class QGISResourceJob(NGWResourceModelJob):
         parameters = {}
         for parameter in layer_source.split('&'):
             key, value = parameter.split("=")
-            value = urllib.unquote_plus(value)
+            value = urllib.parse.unquote_plus(value)
 
-            if parameters.has_key(key):
+            if key in parameters:
                 if not isinstance(parameters[key], list):
                     parameters[key] = [parameters[key], ]
 
@@ -388,7 +392,7 @@ class QGISResourceJob(NGWResourceModelJob):
 
         aliases = {}
         src_layer_aliases = qgs_vector_layer.attributeAliases()
-        for fieldname, alias in src_layer_aliases.items():
+        for fieldname, alias in list(src_layer_aliases.items()):
             if fieldname in rename_fields_map:
                 aliases[rename_fields_map[fieldname]] = alias
             else:
@@ -534,7 +538,7 @@ class QGISResourceJob(NGWResourceModelJob):
                     "QGISResourceJob",
                     "We've renamed fields {0} for layer '{1}'. Style for this layer may become invalid."
                 ).format(
-                    field_name_map.keys(),
+                    list(field_name_map.keys()),
                     qgs_vector_layer_src.name()
                 )
 

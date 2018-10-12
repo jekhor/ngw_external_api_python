@@ -18,6 +18,8 @@
  *                                                                         *
  ***************************************************************************/
 """
+from builtins import str
+from builtins import object
 FEATURE_URL = lambda res_id, feature_id: '/api/resource/%d/feature/%d' % (res_id, feature_id)
 FEATURE_ATTACHMENTS_URL = lambda res_id, feature_id: '/api/resource/%d/feature/%d/attachment/' % (res_id, feature_id)
 
@@ -62,7 +64,7 @@ class NGWFeature(object):
         self.geom_wkt = wkt
 
     def setFieldAsString(self, name, value):
-        self.fields[name] = unicode(value)
+        self.fields[name] = str(value)
 
     def setFieldAsInt(self, name, value):
         self.fields[name] = int(value)

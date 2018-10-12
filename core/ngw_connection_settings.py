@@ -20,7 +20,8 @@
 """
 
 
-class NGWConnectionSettings():
+from builtins import object
+class NGWConnectionSettings(object):
     def __init__(self, connection_name=None, server_url=None, username=None, password=None):
         self.connection_name = connection_name
         self.server_url = server_url

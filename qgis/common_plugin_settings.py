@@ -20,10 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import QSettings
+from builtins import object
+from qgis.PyQt.QtCore import QSettings
 
 
-class PluginSettings():
+class PluginSettings(object):
     '''
     Common settings class
     '''

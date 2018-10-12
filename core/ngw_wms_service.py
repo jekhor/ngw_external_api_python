@@ -18,8 +18,9 @@
  *                                                                         *
  ***************************************************************************/
 """
+from __future__ import absolute_import
 from os import path
-from ngw_resource import NGWResource
+from .ngw_resource import NGWResource
 
 from ..utils import ICONS_DIR
 
