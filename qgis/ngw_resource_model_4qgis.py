@@ -27,8 +27,6 @@ import shutil
 import zipfile
 import tempfile
 
-from PyQt4.QtCore import *
-
 from qgis.core import *
 from qgis.gui import *
 

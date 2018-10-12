@@ -26,8 +26,8 @@ import os
 from urlparse import urlparse
 
 from PyQt4 import uic
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt4.QtCore import Qt, QTimer, QThread, QObject, pyqtSignal, QMutex
+from PyQt4.QtGui import QDialog, QDialogButtonBox, QCompleter, QStringListModel
 from ..core.ngw_connection_settings import NGWConnectionSettings
 from ..core.ngw_resource_factory import NGWResourceFactory
 

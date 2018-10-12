@@ -18,8 +18,8 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import *
-from PyQt4.QtNetwork import *
+from PyQt4.QtCore import QEventLoop, QTemporaryFile, QIODevice, QUrl, pyqtSignal, QSize, QSettings
+from PyQt4.QtNetwork import QNetworkAccessManager, QNetworkRequest
 
 from qgis.core import QgsVectorLayer, QgsMapLayerRegistry, QgsMapLayer, QgsProject, QgsRectangle
 from ..core.ngw_vector_layer import NGWVectorLayer
