@@ -205,7 +205,7 @@ class QGISResourceJob(NGWResourceModelJob):
         layer_type = qgs_map_layer.type()
 
         if layer_type == qgs_map_layer.VectorLayer:
-            if qgs_map_layer.geometryType() in [QGis.NoGeometry, QGis.UnknownGeometry]:
+            if qgs_map_layer.geometryType() in [QgsWkbTypes.NullGeometry, QgsWkbTypes.UnknownGeometry]:
                 return self.SUITABLE_LAYER_BAD_GEOMETRY
 
         return self.SUITABLE_LAYER
@@ -476,7 +476,7 @@ class QGISResourceJob(NGWResourceModelJob):
             #     fids_with_not_valid_geom.append(feature.id())
 
             # Fix one point line. Method isGeosValid return true for same geometry.
-            if feature.geometry().type() == QGis.Line:
+            if feature.geometry().type() == QgsWkbTypes.LineGeometry:
                 g = feature.geometry()
                 if g.isMultipart():
                     for polyline in g.asMultiPolyline():
@@ -487,7 +487,7 @@ class QGISResourceJob(NGWResourceModelJob):
                     if len(g.asPolyline()) < 2:
                         fids_with_not_valid_geom.append(feature.id())
             
-            elif feature.geometry().type() == QGis.Polygon:
+            elif feature.geometry().type() == QgsWkbTypes.PolygonGeometry:
                 g = feature.geometry()
                 if g.isMultipart():
                     for polygon in g.asMultiPolygon():
@@ -618,11 +618,11 @@ class QGISResourceJob(NGWResourceModelJob):
 
     def determineGeometry4MemoryLayer(self, qgs_vector_layer, has_mixed_geoms):
         geometry_type = None
-        if qgs_vector_layer.geometryType() == QGis.Point:
+        if qgs_vector_layer.geometryType() == QgsWkbTypes.PointGeometry:
             geometry_type = "point"
-        elif qgs_vector_layer.geometryType() == QGis.Line:
+        elif qgs_vector_layer.geometryType() == QgsWkbTypes.LineGeometry:
             geometry_type = "linestring"
-        elif qgs_vector_layer.geometryType() == QGis.Polygon:
+        elif qgs_vector_layer.geometryType() == QgsWkbTypes.PolygonGeometry:
             geometry_type = "polygon"
 
         # if has_multipart_geometries:
@@ -695,11 +695,18 @@ class QGISResourceJob(NGWResourceModelJob):
         return tmp
 
     def addQMLStyle(self, qml, ngw_layer_resource):
+        log("QML: %s" % qml)
         def uploadFileCallback(total_size, readed_size):
+            # FIXME: Здесь почему-то прилетает нулевой total_size, поставлен костыль
+            if total_size > 0:
+                progress = readed_size * 100 / total_size
+            else:
+                progress = 0
+
             self.statusChanged.emit(
                 "Style for %s - Upload (%d%%)" % (
                     ngw_layer_resource.common.display_name,
-                    readed_size * 100 / total_size
+                    progress
                 )
             )
 
@@ -860,7 +867,10 @@ class QGISResourceJob(NGWResourceModelJob):
         )
         if ngw_layer_resource.is_geom_multy():
             g.convertToMultiType()
-        feature_dict["geom"] = get_wkt(g)
+
+        feature_dict["geom"] = g.asWkt()
+
+        feature_dict["fields"] = {}
 
         attributes = {}
         for qgsField in qgs_feature.fields().toList():

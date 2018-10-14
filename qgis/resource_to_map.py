@@ -19,9 +19,9 @@
  ***************************************************************************/
 """
 from qgis.PyQt.QtCore import QEventLoop, QTemporaryFile, QIODevice, QUrl, pyqtSignal, QSize, QSettings
-from qgis.PyQt.QtNetwork import QNetworkRequest
+from qgis.PyQt.QtNetwork import QNetworkRequest, QNetworkAccessManager
 
-from qgis.core import QgsVectorLayer, QgsMapLayerRegistry, QgsMapLayer, QgsProject, QgsRectangle
+from qgis.core import QgsVectorLayer, QgsProject, QgsMapLayer, QgsProject, QgsRectangle
 from ..core.ngw_vector_layer import NGWVectorLayer
 from ..core.ngw_wfs_service import NGWWfsService
 
@@ -37,7 +37,7 @@ def add_resource_as_geojson(resource, return_extent=False):
 
     qgs_geojson_layer.dataProvider().setEncoding('UTF-8')
 
-    QgsMapLayerRegistry.instance().addMapLayer(qgs_geojson_layer)
+    QgsProject.instance().addMapLayer(qgs_geojson_layer)
 
     if return_extent:
         if qgs_geojson_layer.extent().isEmpty() and qgs_geojson_layer.type() == QgsMapLayer.VectorLayer:
@@ -74,7 +74,7 @@ def add_resource_as_geojson_with_style(ngw_layer, ngw_style, return_extent=False
         file.fileName()
     )
 
-    QgsMapLayerRegistry.instance().addMapLayer(qgs_geojson_layer)
+    QgsProject.instance().addMapLayer(qgs_geojson_layer)
 
     if return_extent:
         if qgs_geojson_layer.extent().isEmpty() and qgs_geojson_layer.type() == QgsMapLayer.VectorLayer:
@@ -99,7 +99,7 @@ def add_resource_as_wfs_layers(wfs_resource, return_extent=False):
         #summarize extent
         if return_extent:
             _summ_extent(summary_extent, qgs_wfs_layer)
-        QgsMapLayerRegistry.instance().addMapLayer(qgs_wfs_layer, False)
+        QgsProject.instance().addMapLayer(qgs_wfs_layer, False)
         layers_group.insertLayer(0, qgs_wfs_layer)
 
     if return_extent:

@@ -29,7 +29,7 @@ import os
 from urllib.parse import urlparse
 
 from qgis.PyQt import uic
-from qgis.PyQt.QtCore import Qt, QTimer, QThread, QObject, pyqtSignal, QMutex
+from qgis.PyQt.QtCore import Qt, QTimer, QThread, QObject, pyqtSignal, QMutex, QStringListModel
 from qgis.PyQt.QtWidgets import QDialog, QDialogButtonBox, QCompleter
 from ..core.ngw_connection_settings import NGWConnectionSettings
 from ..core.ngw_resource_factory import NGWResourceFactory

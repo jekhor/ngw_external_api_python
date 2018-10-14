@@ -23,7 +23,7 @@ from builtins import range
 import json
 from base64 import b64encode
 
-from qgis.PyQt.QtCore import QEventLoop, QByteArray, QObject, QUrl, QIODevice
+from qgis.PyQt.QtCore import QEventLoop, QByteArray, QObject, QUrl, QIODevice, QBuffer, QFile
 from qgis.PyQt.QtNetwork import QNetworkRequest
 
 from qgis.core import *
@@ -95,16 +95,17 @@ class QgsNgwConnection(QObject):
 
         req = QNetworkRequest(QUrl(self.server_url + sub_url))
 
-        authstr = (u'%s:%s' % self.__auth).encode('utf-8')        
-        authstr = QByteArray('Basic ' +  QByteArray(authstr).toBase64())
-        req.setRawHeader("Authorization", authstr);
+        authstr = (u'%s:%s' % self.__auth).encode('utf-8')
+        authstr = QByteArray(authstr).toBase64()
+        authstr = QByteArray(('Basic ').encode('utf-8')).append(authstr)
+        req.setRawHeader(("Authorization").encode('utf-8'), authstr);
 
         data = QBuffer(QByteArray())
         if file is not None:
             data = QFile(file)
         elif json_data is not None:
             req.setHeader(QNetworkRequest.ContentTypeHeader, "application/json");
-            json_data = QByteArray(json_data)
+            json_data = QByteArray(bytes(json_data, encoding='utf-8'))
             data = QBuffer(json_data)
             
         data.open(QIODevice.ReadOnly)
@@ -119,7 +120,7 @@ class QgsNgwConnection(QObject):
         elif method == "DELETE":
             rep = nam.deleteResource(req)
         else:            
-            rep = nam.sendCustomRequest(req, method, data)
+            rep = nam.sendCustomRequest(req, bytes(method, encoding='ascii'), data)
         
         rep.finished.connect(loop.quit)
         if file is not None:
@@ -158,7 +159,7 @@ class QgsNgwConnection(QObject):
 
         status_code = rep.attribute( QNetworkRequest.HttpStatusCodeAttribute )
 
-        if  status_code / 100 != 2:
+        if  status_code // 100 != 2:
             log("Response\nerror status_code {}\nmsg: {}".format(status_code, data))
             
             ngw_message_present = False
@@ -174,7 +175,7 @@ class QgsNgwConnection(QObject):
                 raise NGWError(NGWError.TypeRequestError, "Response status code is %s" % status_code, req.url().toString())                
 
         try:
-            json_response = json.loads(str(data))
+            json_response = json.loads(data.data().decode('utf-8'))
         except:
             log("Response\nerror response JSON parse\n%s" % data)
             raise NGWError(NGWError.TypeNGWUnexpectedAnswer, "", req.url().toString())
@@ -194,7 +195,7 @@ class QgsNgwConnection(QObject):
         return self.put(self.get_upload_file_url(), file=filename)
 
     def sendUploadProgress(self, sent, total):
-        log("Download %d from %s" % (sent, total,))
+        log("Upload %d from %s" % (sent, total,))
         self.uploadProgressCallback(total, sent)
 
     def get_ngw_components(self):
