@@ -122,7 +122,7 @@ class NGWResourceModelJob(QObject):
                 else:
                     self.errorOccurred.emit(
                         JobNGWError(
-                            "%s" % ngw_exeption_dict.get("message", "No message"),
+                            "%s\n%s" % (ngw_exeption_dict.get("message", "No message"), traceback.format_exc()),
                              e.url
                         )
                     )
@@ -131,7 +131,7 @@ class NGWResourceModelJob(QObject):
                 self.errorOccurred.emit(JobServerRequestError(self.tr("Bad http comunication.") + "%s"%e, e.url))
 
             elif e.type == NGWError.TypeNGWUnexpectedAnswer:
-                self.errorOccurred.emit(JobNGWError(self.tr("Cann't parse server answer"), e.url))
+                self.errorOccurred.emit(JobNGWError(self.tr("Can't parse server answer"), e.url))
 
             else:
                 self.errorOccurred.emit(JobServerRequestError(self.tr("Something wrong with request to server"), e.url))                
