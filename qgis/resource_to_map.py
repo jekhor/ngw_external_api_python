@@ -19,7 +19,7 @@
  ***************************************************************************/
 """
 from qgis.PyQt.QtCore import QEventLoop, QTemporaryFile, QIODevice, QUrl, pyqtSignal, QSize, QSettings
-from qgis.PyQt.QtNetwork import QNetworkRequest, QNetworkAccessManager
+from qgis.PyQt.QtNetwork import QNetworkRequest
 
 from qgis.core import QgsVectorLayer, QgsProject, QgsMapLayer, QgsProject, QgsRectangle
 from ..core.ngw_vector_layer import NGWVectorLayer

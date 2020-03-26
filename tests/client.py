@@ -48,11 +48,11 @@ def connect(connection_string=None):
         url, userpwd = connection_string.split("@")
         user, pwd = userpwd.split(":")
 
-    url = input("Url: ") if url is None else url
-    user = input("User: ") if user is None else user
+    url = eval(input("Url: ")) if url is None else url
+    user = eval(input("User: ")) if user is None else user
 
     if user != "":
-        pwd = input("Password: ") if pwd is None else pwd       
+        pwd = eval(input("Password: ")) if pwd is None else pwd       
     else:
         pwd = ""
 

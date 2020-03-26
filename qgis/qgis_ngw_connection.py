@@ -18,12 +18,13 @@
  *                                                                         *
  ***************************************************************************/
 """
+from builtins import bytes
 from builtins import str
 from builtins import range
 import json
 from base64 import b64encode
 
-from qgis.PyQt.QtCore import QEventLoop, QByteArray, QObject, QUrl, QIODevice, QBuffer, QFile
+from qgis.PyQt.QtCore import QEventLoop, QByteArray, QObject, QUrl, QIODevice, QFile
 from qgis.PyQt.QtNetwork import QNetworkRequest
 
 from qgis.core import *
@@ -164,7 +165,7 @@ class QgsNgwConnection(QObject):
             
             ngw_message_present = False
             try:
-                json.loads(unicode(data))
+                json.loads(str(data))
                 ngw_message_present = True
             except Exception as e:
                 pass

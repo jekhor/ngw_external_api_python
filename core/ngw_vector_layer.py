@@ -197,7 +197,7 @@ class NGWVectorLayer(NGWResource):
     def construct_ngw_feature_as_json(self, attributes):
         json_feature = {}
 
-        for field_name, pyvalue in attributes.items():
+        for field_name, pyvalue in list(attributes.items()):
             field_type = self.fieldType(field_name)
             field_value = None
             if field_type == NGWVectorLayer.FieldTypeDate:
