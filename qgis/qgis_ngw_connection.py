@@ -24,7 +24,7 @@ from builtins import range
 import json
 from base64 import b64encode
 
-from qgis.PyQt.QtCore import QEventLoop, QByteArray, QObject, QUrl, QIODevice, QFile
+from qgis.PyQt.QtCore import QEventLoop, QBuffer, QByteArray, QObject, QUrl, QIODevice, QFile
 from qgis.PyQt.QtNetwork import QNetworkRequest
 
 from qgis.core import *
@@ -177,8 +177,8 @@ class QgsNgwConnection(QObject):
 
         try:
             json_response = json.loads(data.data().decode('utf-8'))
-        except:
-            log("Response\nerror response JSON parse\n%s" % data)
+        except Exception as e:
+            log("Response\nerror response JSON parse:\n%s\n%s" % (e.msg, data))
             raise NGWError(NGWError.TypeNGWUnexpectedAnswer, "", req.url().toString())
 
         rep.deleteLater()

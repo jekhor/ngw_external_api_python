@@ -135,7 +135,7 @@ class NGWWebMapRoot(NGWWebMapItem):
 
 
 class NGWWebMapLayer(NGWWebMapItem):
-    def __init__(self, layer_style_id, display_name, is_visible, transparency):
+    def __init__(self, layer_style_id, display_name, is_visible, transparency=None):
         NGWWebMapItem.__init__(self, NGWWebMapItem.ITEM_TYPE_LAYER)
         self.layer_style_id = layer_style_id
         self.display_name = display_name

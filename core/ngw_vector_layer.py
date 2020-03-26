@@ -18,8 +18,8 @@
  *                                                                         *
  ***************************************************************************/
 """
-import datetime
 from __future__ import absolute_import
+import datetime
 from builtins import range
 from os import path
 from .ngw_resource import NGWResource, API_LAYER_EXTENT
